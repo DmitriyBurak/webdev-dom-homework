@@ -7,8 +7,8 @@
 
   <body>
     <div class="container">
-      <ul class="comments">
-        <li class="comment">
+      <ul class="comments" id="comments">
+        <!-- <li class="comment">
           <div class="comment-header">
             <div>Глеб Фокин</div>
             <div>12.02.22 12:18</div>
@@ -20,7 +20,7 @@
           </div>
           <div class="comment-footer">
             <div class="likes">
-              <span class="likes-counter">3</span>
+              <span class="likes-counter">5</span>
               <button class="like-button"></button>
             </div>
           </div>
@@ -38,32 +38,211 @@
           <div class="comment-footer">
             <div class="likes">
               <span class="likes-counter">75</span>
-              <button class="like-button -active-like"></button>
+              <button class="like-button"></button>
             </div>
           </div>
-        </li>
+        </li> -->
       </ul>
       <div class="add-form">
         <input
           type="text"
           class="add-form-name"
           placeholder="Введите ваше имя"
+          id="name-input"
         />
         <textarea
           type="textarea"
           class="add-form-text"
           placeholder="Введите ваш коментарий"
           rows="4"
+          id="comment-area"
         ></textarea>
         <div class="add-form-row">
-          <button class="add-form-button">Написать</button>
+          <button class="add-form-button" id="add-form-button">Написать</button>
         </div>
       </div>
     </div>
-  </body>
 
-  <script>
-    // Код писать здесь
-    console.log("It works!");
-  </script>
+    <!-- добавление нового коммента -->
+    <script>
+      const butAddComment = document.querySelector(".add-form-button");
+      const listOfComments = document.querySelector(".comments");
+      const nameInputElement = document.querySelector("#name-input");
+      const commentAreaElement = document.querySelector("#comment-area");
+
+      const allComments = [
+        {
+          name: "Глеб Фокин",
+          date: "12.02.22 12:18",
+          textOfComment: "Это будет первый комментарий на этой странице",
+          likes: 5,
+          liked: false,
+        },
+        {
+          name: "Варвара Н.",
+          date: "13.02.22 19:22",
+          textOfComment: "Мне нравится как оформлена эта страница! ❤",
+          likes: 72,
+          liked: true,
+        },
+      ];
+
+      const clickLikeButton = () => {
+        let likeButton = document.querySelectorAll(".like-button");
+
+        for (let i = 0; i < likeButton.length; i++) {
+          likeButton[i].onclick = function () {
+            if (allComments[i].liked === false) {
+              allComments[i].liked = true;
+              allComments[i].likes += 1;
+            } else if (allComments[i].liked === true) {
+              allComments[i].liked = false;
+              allComments[i].likes -= 1;
+            }
+            renderComments();
+          };
+        }
+      };
+
+      const initDeleteButtonsListeners = () => {
+        const deleteButtonsElements =
+          document.querySelectorAll(".delete-button");
+
+        for (const deleteButtonElement of deleteButtonsElements) {
+          deleteButtonElement.addEventListener("click", () => {
+            const index = deleteButtonElement.dataset.index;
+            console.log(index);
+            allComments.splice(index, 1);
+            renderComments();
+          });
+        }
+      };
+
+      const renderComments = () => {
+        const commentsHtml = allComments
+          .map((comment, index) => {
+            return `<li class="comment">
+          <div class="comment-header">
+            <div>${comment.name}</div>
+            <div>${comment.date}</div>
+          </div>
+          <div class="comment-body">
+            <div class="comment-text">
+              ${comment.textOfComment}
+            </div>
+          </div>
+          <div class="comment-footer">
+            <div class="but-del">
+              <button data-index="${index}" class='delete-button'>Удалить</button>
+            </div>
+            <div class="likes">
+              <span class="likes-counter">${comment.likes}</span>
+              <button class="${
+                comment.liked ? "like-button -active-like" : "like-button"
+              }"></button>
+            </div>
+          </div>
+        </li>`;
+          })
+          .join("");
+
+        listOfComments.innerHTML = commentsHtml;
+        clickLikeButton();
+        initDeleteButtonsListeners();
+      };
+
+      renderComments();
+
+      const currentDate = new Date();
+      let day = currentDate.getDate();
+      if (day < 10) {
+        day = "0" + day;
+      }
+      const months = [
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "10",
+        "11",
+        "12",
+      ];
+      let month = months[currentDate.getMonth()];
+      let year = currentDate.getFullYear() % 100;
+      if (year < 10) year = "0" + year;
+
+      let hour = currentDate.getHours();
+      if (hour < 10) {
+        hour = "0" + hour;
+      }
+      let minute = currentDate.getMinutes();
+      if (minute < 10) {
+        minute = "0" + minute;
+      }
+      const newDate =
+        day + "." + month + "." + year + " " + hour + ":" + minute;
+
+      // butAddComment.setAttribute("disabled", true);
+      butAddComment.addEventListener("click", () => {
+        if (nameInputElement.value === "" || commentAreaElement.value === "") {
+          // butAddComment.setAttribute("disabled", true);
+          alert("Требуется заполнить все поля!");
+          return;
+        }
+
+        allComments.push({
+          name: nameInputElement.value,
+          date: newDate,
+          textOfComment: commentAreaElement.value,
+          likes: 0,
+          liked: false,
+        });
+
+        renderComments();
+
+        // Очищаем поля
+        nameInputElement.value = "";
+        commentAreaElement.value = "";
+
+        // let likeButton = document.querySelectorAll(".like-button");
+        // let likesCounter = document.querySelectorAll(".likes-counter");
+        // for (let i = 0; i < likeButton.length; i++) {
+        //   for (let i = 0; i < likesCounter.length; i++) {
+        //     likeButton[i].onclick = function () {
+        //       if (likeButton[i].classList.contains("-active-like")) {
+        //         likesCounter[i].textContent--;
+        //       } else {
+        //         likesCounter[i].textContent++;
+        //       }
+        //       likeButton[i].classList.toggle("-active-like");
+        //     };
+        //   }
+        // }
+      });
+    </script>
+
+    <!-- добавление лайков -->
+
+    <!-- <script>
+      let likeButton = document.querySelectorAll(".like-button");
+      let likesCounter = document.querySelectorAll(".likes-counter");
+      for (let i = 0; i < likeButton.length; i++) {
+        for (let i = 0; i < likesCounter.length; i++) {
+          likeButton[i].onclick = function () {
+            if (likeButton[i].classList.contains("-active-like")) {
+              likesCounter[i].textContent--;
+            } else {
+              likesCounter[i].textContent++;
+            }
+            likeButton[i].classList.toggle("-active-like");
+          };
+        }
+      }
+    </script> -->
+  </body>
 </html>
