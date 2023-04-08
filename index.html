@@ -19,7 +19,6 @@
           class="add-form-name"
           placeholder="Введите ваше имя"
           id="name-input"
-          oninput="isValidForm()"
         />
         <textarea
           type="textarea"
@@ -27,16 +26,9 @@
           placeholder="Введите ваш коментарий"
           rows="4"
           id="comment-area"
-          oninput="isValidForm()"
         ></textarea>
         <div class="add-form-row">
-          <button
-            class="add-form-button"
-            id="add-form-button"
-            disabled="disabled"
-          >
-            Написать
-          </button>
+          <button class="add-form-button" id="add-form-button">Написать</button>
         </div>
       </div>
       <div id="isLoading">
@@ -61,341 +53,352 @@
       </div>
     </div>
 
-    <!-- добавление нового коммента -->
     <script>
-      const butAddComment = document.querySelector(".add-form-button");
+      // в api.js
+      // const butAddComment = document.querySelector(".add-form-button");
       const listOfComments = document.querySelector(".comments");
-      const nameInputElement = document.querySelector("#name-input");
-      const commentAreaElement = document.querySelector("#comment-area");
-      const addForm = document.querySelector(".add-form");
-      document.querySelector("#isLoading").style.display = "none";
+      // const nameInputElement = document.querySelector("#name-input");
+      // const commentAreaElement = document.querySelector("#comment-area");
+      // const addForm = document.querySelector(".add-form");
+      // document.querySelector("#isLoading").style.display = "none";
 
-      const fetchPromise = fetch(
-        "https://webdev-hw-api.vercel.app/api/v1/dima-burak/comments",
-        {
-          method: "GET",
-        }
-      );
+      // в api.js
+      // const fetchPromise = fetch(
+      //   "https://webdev-hw-api.vercel.app/api/v1/dima-burak/comments",
+      //   {
+      //     method: "GET",
+      //   }
+      // );
 
-      fetchPromise.then((response) => {
-        const jsonPromise = response.json();
+      // fetchPromise.then((response) => {
+      //   const jsonPromise = response.json();
 
-        jsonPromise.then((responseData) => {
-          console.log(responseData);
-          allComments = [...responseData.comments];
-          renderComments();
-        });
-      });
+      //   jsonPromise.then((responseData) => {
+      //     console.log(responseData);
+      //     allComments = [...responseData.comments];
+      //     renderComments();
+      //   });
+      // });
 
-      let allComments = [
-        // {
-        //   name: "Глеб Фокин",
-        //   date: "12.02.22 12:18",
-        //   textOfComment: "Это будет первый комментарий на этой странице",
-        //   likes: 5,
-        //   liked: false,
-        // },
-        // {
-        //   name: "Варвара Н.",
-        //   date: "13.02.22 19:22",
-        //   textOfComment: "Мне нравится как оформлена эта страница! ❤",
-        //   likes: 72,
-        //   liked: true,
-        // },
-      ];
+      /// в api.js
+      // let allComments = [
+      // {
+      //   name: "Глеб Фокин",
+      //   date: "12.02.22 12:18",
+      //   textOfComment: "Это будет первый комментарий на этой странице",
+      //   likes: 5,
+      //   liked: false,
+      // },
+      // {
+      //   name: "Варвара Н.",
+      //   date: "13.02.22 19:22",
+      //   textOfComment: "Мне нравится как оформлена эта страница! ❤",
+      //   likes: 72,
+      //   liked: true,
+      // },
+      // ];
 
-      const isValidForm = () => {
-        if (nameInputElement.value === "" || commentAreaElement.value === "") {
-          butAddComment.disabled = true;
-          return false;
-        } else {
-          butAddComment.disabled = false;
-          return true;
-        }
-      };
+      // в api.js
+      // const isValidForm = () => {
+      //   if (nameInputElement.value === "" || commentAreaElement.value === "") {
+      //     butAddComment.disabled = true;
+      //     return false;
+      //   } else {
+      //     butAddComment.disabled = false;
+      //     return true;
+      //   }
+      // };
 
-      const clickLikeButton = () => {
-        let likeButton = document.querySelectorAll(".like-button");
-        for (let i = 0; i < likeButton.length; i++) {
-          likeButton[i].onclick = function (event) {
-            event.stopPropagation();
-            if (allComments[i].liked === false) {
-              allComments[i].liked = true;
-              allComments[i].likes += 1;
-            } else if (allComments[i].liked === true) {
-              allComments[i].liked = false;
-              allComments[i].likes -= 1;
-            }
-            renderComments();
-            responseToComment();
-          };
-        }
-      };
+      // в render.js
+      // const clickLikeButton = () => {
+      //   let likeButton = document.querySelectorAll(".like-button");
+      //   for (let i = 0; i < likeButton.length; i++) {
+      //     likeButton[i].onclick = function (event) {
+      //       event.stopPropagation();
+      //       if (allComments[i].liked === false) {
+      //         allComments[i].liked = true;
+      //         allComments[i].likes += 1;
+      //       } else if (allComments[i].liked === true) {
+      //         allComments[i].liked = false;
+      //         allComments[i].likes -= 1;
+      //       }
+      //       renderComments();
+      //       responseToComment();
+      //     };
+      //   }
+      // };
 
-      const initDeleteButtonsListeners = () => {
-        const deleteButtonsElements =
-          document.querySelectorAll(".delete-button");
+      // в render.js
+      // const initDeleteButtonsListeners = () => {
+      //   const deleteButtonsElements =
+      //     document.querySelectorAll(".delete-button");
 
-        for (const deleteButtonElement of deleteButtonsElements) {
-          deleteButtonElement.addEventListener("click", (event) => {
-            event.stopPropagation();
-            const index = deleteButtonElement.dataset.index;
-            console.log(index);
-            allComments.splice(index, 1);
-            renderComments();
-            responseToComment();
-          });
-        }
-      };
+      //   for (const deleteButtonElement of deleteButtonsElements) {
+      //     deleteButtonElement.addEventListener("click", (event) => {
+      //       event.stopPropagation();
+      //       const index = deleteButtonElement.dataset.index;
+      //       console.log(index);
+      //       allComments.splice(index, 1);
+      //       renderComments();
+      //       responseToComment();
+      //     });
+      //   }
+      // };
 
-      const renderComments = () => {
-        const commentsHtml = allComments
-          .map((comment, index) => {
-            return `<li data-text='${comment.text} \n ${
-              comment.name
-            }' class="comment">
-          <div class="comment-header">
-            <div>${comment.author.name}</div>
-            <div>${new Date(comment.date).toLocaleString()}</div>
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">
-              ${comment.text}
-            </div>
-          </div>
-          <div class="comment-footer">
-            <div class="but-del">
-              <button data-index="${index}" class='delete-button'>Удалить</button>
-            </div>
-            <div class="likes">
-              <span class="likes-counter">${comment.likes}</span>
-              <button class="${
-                comment.isLiked ? "like-button -active-like" : "like-button"
-              }"></button>
-            </div>
-          </div>
-        </li>`;
-          })
-          .join("");
+      // в render.js
+      // const renderComments = () => {
+      //   const commentsHtml = allComments
+      //     .map((comment, index) => {
+      //       return `<li data-text='${comment.text} \n ${
+      //         comment.name
+      //       }' class="comment">
+      //     <div class="comment-header">
+      //       <div>${comment.author.name}</div>
+      //       <div>${new Date(comment.date).toLocaleString()}</div>
+      //     </div>
+      //     <div class="comment-body">
+      //       <div class="comment-text">
+      //         ${comment.text}
+      //       </div>
+      //     </div>
+      //     <div class="comment-footer">
+      //       <div class="but-del">
+      //         <button data-index="${index}" class='delete-button'>Удалить</button>
+      //       </div>
+      //       <div class="likes">
+      //         <span class="likes-counter">${comment.likes}</span>
+      //         <button class="${
+      //           comment.isLiked ? "like-button -active-like" : "like-button"
+      //         }"></button>
+      //       </div>
+      //     </div>
+      //   </li>`;
+      //     })
+      //     .join("");
 
-        listOfComments.innerHTML = commentsHtml;
-        clickLikeButton();
-        initDeleteButtonsListeners();
-      };
+      //   listOfComments.innerHTML = commentsHtml;
+      //   clickLikeButton();
+      //   initDeleteButtonsListeners();
+      // };
 
-      renderComments();
+      // renderComments();
 
-      const responseToComment = () => {
-        const comMents = document.querySelectorAll(".comment");
-        const commentArea = document.getElementById("comment-area");
-        for (const comment of comMents) {
-          comment.addEventListener("click", () => {
-            const response = comment.dataset.text;
-            commentArea.value = response;
-          });
-        }
-      };
-      responseToComment();
+      // в render.js
+      // const responseToComment = () => {
+      //   const comMents = document.querySelectorAll(".comment");
+      //   const commentArea = document.getElementById("comment-area");
+      //   for (const comment of comMents) {
+      //     comment.addEventListener("click", () => {
+      //       const response = comment.dataset.text;
+      //       commentArea.value = response;
+      //     });
+      //   }
+      // };
+      // responseToComment();
 
-      const getCurrentDate = () => {
-        const currentDate = new Date();
-        let day = currentDate.getDate();
-        if (day < 10) {
-          day = "0" + day;
-        }
-        const months = [
-          "01",
-          "02",
-          "03",
-          "04",
-          "05",
-          "06",
-          "07",
-          "08",
-          "09",
-          "10",
-          "11",
-          "12",
-        ];
-        let month = months[currentDate.getMonth()];
-        let year = currentDate.getFullYear() % 100;
-        if (year < 10) year = "0" + year;
+      // const getCurrentDate = () => {
+      //   const currentDate = new Date();
+      //   let day = currentDate.getDate();
+      //   if (day < 10) {
+      //     day = "0" + day;
+      //   }
+      //   const months = [
+      //     "01",
+      //     "02",
+      //     "03",
+      //     "04",
+      //     "05",
+      //     "06",
+      //     "07",
+      //     "08",
+      //     "09",
+      //     "10",
+      //     "11",
+      //     "12",
+      //   ];
+      //   let month = months[currentDate.getMonth()];
+      //   let year = currentDate.getFullYear() % 100;
+      //   if (year < 10) year = "0" + year;
 
-        let hour = currentDate.getHours();
-        if (hour < 10) {
-          hour = "0" + hour;
-        }
-        let minute = currentDate.getMinutes();
-        if (minute < 10) {
-          minute = "0" + minute;
-        }
-        const newDate =
-          day + "." + month + "." + year + " " + hour + ":" + minute;
-        return newDate;
-      };
+      //   let hour = currentDate.getHours();
+      //   if (hour < 10) {
+      //     hour = "0" + hour;
+      //   }
+      //   let minute = currentDate.getMinutes();
+      //   if (minute < 10) {
+      //     minute = "0" + minute;
+      //   }
+      //   const newDate =
+      //     day + "." + month + "." + year + " " + hour + ":" + minute;
+      //   return newDate;
+      // };
 
       // избавление от callback hell, превращение в then paradise
-      butAddComment.addEventListener("click", () => {
-        document.querySelector("#isLoading").style.display = "block";
-        document.querySelector("#isLoading2").style.display = "none";
-        fetch("https://webdev-hw-api.vercel.app/api/v1/dima-burak/comments", {
-          method: "POST",
-          body: JSON.stringify({
-            text: commentAreaElement.value
-              .replaceAll("<", "&lt")
-              .replaceAll(">", "&gt"),
-            name: nameInputElement.value
-              .replaceAll("<", "&lt")
-              .replaceAll(">", "&gt"),
-            forceError: true,
-          }),
-        })
-          .then((response) => {
-            if (response.status === 201) {
-              return fetch(
-                "https://webdev-hw-api.vercel.app/api/v1/dima-burak/comments",
-                {
-                  method: "GET",
-                }
-              );
-            } else if (response.status === 400) {
-              // alert("Имя и комментарий должны быть не короче 3 символов");
-              throw new Error("Ошибка ввода");
-            } else if (response.status === 500) {
-              // alert("Сервер сломался, попробуй позже");
-              throw new Error("Сервер упал");
-            } else {
-              // alert("Нет интернет...");
-            }
-          })
-          .then((response) => {
-            return response.json();
-          })
-          .then((responseData) => {
-            allComments = [...responseData.comments];
-            butAddComment.disabled = true;
-            document.querySelector("#isLoading").style.display = "none";
-            document.querySelector("#isLoading2").style.display = "flex";
-            nameInputElement.value = "";
-            commentAreaElement.value = "";
-            renderComments();
-          })
-          .catch((error) => {
-            butAddComment.disabled = false;
-            document.querySelector("#isLoading").style.display = "none";
-            document.querySelector("#isLoading2").style.display = "flex";
-            if (error.message === "Сервер упал") {
-              alert("Сервер сломался, попробуй позже");
-              return;
-            }
-            if (error.message === "Ошибка ввода") {
-              alert("Имя и комментарий должны быть не короче 3 символов");
-              return;
-            }
-            alert("Отсутствует соединение с интернетом, попробуйте позже...");
-            console.warn(error);
-          });
+      // butAddComment.addEventListener("click", () => {
+      //   document.querySelector("#isLoading").style.display = "block";
+      //   document.querySelector("#isLoading2").style.display = "none";
+      //   fetch("https://webdev-hw-api.vercel.app/api/v1/dima-burak/comments", {
+      //     method: "POST",
+      //     body: JSON.stringify({
+      //       text: commentAreaElement.value
+      //         .replaceAll("<", "&lt")
+      //         .replaceAll(">", "&gt"),
+      //       name: nameInputElement.value
+      //         .replaceAll("<", "&lt")
+      //         .replaceAll(">", "&gt"),
+      //       forceError: true,
+      //     }),
+      //   })
+      //     .then((response) => {
+      //       if (response.status === 201) {
+      //         return fetch(
+      //           "https://webdev-hw-api.vercel.app/api/v1/dima-burak/comments",
+      //           {
+      //             method: "GET",
+      //           }
+      //         );
+      //       } else if (response.status === 400) {
+      //         // alert("Имя и комментарий должны быть не короче 3 символов");
+      //         throw new Error("Ошибка ввода");
+      //       } else if (response.status === 500) {
+      //         // alert("Сервер сломался, попробуй позже");
+      //         throw new Error("Сервер упал");
+      //       } else {
+      //         // alert("Нет интернет...");
+      //       }
+      //     })
+      //     .then((response) => {
+      //       return response.json();
+      //     })
+      //     .then((responseData) => {
+      //       allComments = [...responseData.comments];
+      //       butAddComment.disabled = true;
+      //       document.querySelector("#isLoading").style.display = "none";
+      //       document.querySelector("#isLoading2").style.display = "flex";
+      //       nameInputElement.value = "";
+      //       commentAreaElement.value = "";
+      //       renderComments();
+      //     })
+      //     .catch((error) => {
+      //       butAddComment.disabled = false;
+      //       document.querySelector("#isLoading").style.display = "none";
+      //       document.querySelector("#isLoading2").style.display = "flex";
+      //       if (error.message === "Сервер упал") {
+      //         alert("Сервер сломался, попробуй позже");
+      //         return;
+      //       }
+      //       if (error.message === "Ошибка ввода") {
+      //         alert("Имя и комментарий должны быть не короче 3 символов");
+      //         return;
+      //       }
+      //       alert("Отсутствует соединение с интернетом, попробуйте позже...");
+      //       console.warn(error);
+      //     });
 
-        // callback hell
-        // fetch("https://webdev-hw-api.vercel.app/api/v1/dima-burak/comments", {
-        //   method: "POST",
-        //   body: JSON.stringify({
-        //     text: commentAreaElement.value
-        //       .replaceAll("<", "&lt")
-        //       .replaceAll(">", "&gt"),
-        //     name: nameInputElement.value
-        //       .replaceAll("<", "&lt")
-        //       .replaceAll(">", "&gt"),
-        //   }),
-        // }).then((response) => {
-        //   const fetchPromise = fetch(
-        //     "https://webdev-hw-api.vercel.app/api/v1/dima-burak/comments",
-        //     {
-        //       method: "GET",
-        //     }
-        //   );
+      // callback hell
+      // fetch("https://webdev-hw-api.vercel.app/api/v1/dima-burak/comments", {
+      //   method: "POST",
+      //   body: JSON.stringify({
+      //     text: commentAreaElement.value
+      //       .replaceAll("<", "&lt")
+      //       .replaceAll(">", "&gt"),
+      //     name: nameInputElement.value
+      //       .replaceAll("<", "&lt")
+      //       .replaceAll(">", "&gt"),
+      //   }),
+      // }).then((response) => {
+      //   const fetchPromise = fetch(
+      //     "https://webdev-hw-api.vercel.app/api/v1/dima-burak/comments",
+      //     {
+      //       method: "GET",
+      //     }
+      //   );
 
-        //   fetchPromise.then((response) => {
-        //     const jsonPromise = response.json();
-        //     jsonPromise.then((responseData) => {
-        //       allComments = [...responseData.comments];
-        //       document.querySelector("#isLoading").style.display = "none";
-        //       document.querySelector("#isLoading2").style.display = "flex";
-        //       renderComments();
-        //     });
-        //   });
-        // });
+      //   fetchPromise.then((response) => {
+      //     const jsonPromise = response.json();
+      //     jsonPromise.then((responseData) => {
+      //       allComments = [...responseData.comments];
+      //       document.querySelector("#isLoading").style.display = "none";
+      //       document.querySelector("#isLoading2").style.display = "flex";
+      //       renderComments();
+      //     });
+      //   });
+      // });
 
-        // Очищаем поля
-        // nameInputElement.value = "";
-        // commentAreaElement.value = "";
-        // butAddComment.disabled = true;
-      });
+      // Очищаем поля
+      // nameInputElement.value = "";
+      // commentAreaElement.value = "";
+      // butAddComment.disabled = true;
+      // });
 
-      addForm.addEventListener("keyup", (action) => {
-        if (action.code === "Enter" && isValidForm()) {
-          document.querySelector("#isLoading").style.display = "block";
-          document.querySelector("#isLoading2").style.display = "none";
-          fetch("https://webdev-hw-api.vercel.app/api/v1/dima-burak/comments", {
-            method: "POST",
-            body: JSON.stringify({
-              text: commentAreaElement.value
-                .replaceAll("<", "&lt")
-                .replaceAll(">", "&gt"),
-              name: nameInputElement.value
-                .replaceAll("<", "&lt")
-                .replaceAll(">", "&gt"),
-              forceError: true,
-            }),
-          })
-            .then((response) => {
-              if (response.status === 201) {
-                return fetch(
-                  "https://webdev-hw-api.vercel.app/api/v1/dima-burak/comments",
-                  {
-                    method: "GET",
-                  }
-                );
-              } else if (response.status === 400) {
-                throw new Error("Ошибка ввода");
-              } else if (response.status === 500) {
-                throw new Error("Сервер упал");
-              }
-            })
-            .then((response) => {
-              return response.json();
-            })
-            .then((responseData) => {
-              allComments = [...responseData.comments];
-              butAddComment.disabled = true;
-              document.querySelector("#isLoading").style.display = "none";
-              document.querySelector("#isLoading2").style.display = "flex";
-              nameInputElement.value = "";
-              commentAreaElement.value = "";
-              renderComments();
-            })
-            .catch((error) => {
-              butAddComment.disabled = false;
-              document.querySelector("#isLoading").style.display = "none";
-              document.querySelector("#isLoading2").style.display = "flex";
-              if (error.message === "Сервер упал") {
-                alert("Сервер сломался, попробуй позже");
-                return;
-              }
-              if (error.message === "Ошибка ввода") {
-                alert("Имя и комментарий должны быть не короче 3 символов");
-                return;
-              }
-              alert("Отсутствует соединение с интернетом, попробуйте позже...");
-              console.warn(error);
-            });
+      // addForm.addEventListener("keyup", (action) => {
+      //   if (action.code === "Enter" && isValidForm()) {
+      //     document.querySelector("#isLoading").style.display = "block";
+      //     document.querySelector("#isLoading2").style.display = "none";
+      //     fetch("https://webdev-hw-api.vercel.app/api/v1/dima-burak/comments", {
+      //       method: "POST",
+      //       body: JSON.stringify({
+      //         text: commentAreaElement.value
+      //           .replaceAll("<", "&lt")
+      //           .replaceAll(">", "&gt"),
+      //         name: nameInputElement.value
+      //           .replaceAll("<", "&lt")
+      //           .replaceAll(">", "&gt"),
+      //         forceError: true,
+      //       }),
+      //     })
+      //       .then((response) => {
+      //         if (response.status === 201) {
+      //           return fetch(
+      //             "https://webdev-hw-api.vercel.app/api/v1/dima-burak/comments",
+      //             {
+      //               method: "GET",
+      //             }
+      //           );
+      //         } else if (response.status === 400) {
+      //           throw new Error("Ошибка ввода");
+      //         } else if (response.status === 500) {
+      //           throw new Error("Сервер упал");
+      //         }
+      //       })
+      //       .then((response) => {
+      //         return response.json();
+      //       })
+      //       .then((responseData) => {
+      //         allComments = [...responseData.comments];
+      //         butAddComment.disabled = true;
+      //         document.querySelector("#isLoading").style.display = "none";
+      //         document.querySelector("#isLoading2").style.display = "flex";
+      //         nameInputElement.value = "";
+      //         commentAreaElement.value = "";
+      //         renderComments();
+      //       })
+      //       .catch((error) => {
+      //         butAddComment.disabled = false;
+      //         document.querySelector("#isLoading").style.display = "none";
+      //         document.querySelector("#isLoading2").style.display = "flex";
+      //         if (error.message === "Сервер упал") {
+      //           alert("Сервер сломался, попробуй позже");
+      //           return;
+      //         }
+      //         if (error.message === "Ошибка ввода") {
+      //           alert("Имя и комментарий должны быть не короче 3 символов");
+      //           return;
+      //         }
+      //         alert("Отсутствует соединение с интернетом, попробуйте позже...");
+      //         console.warn(error);
+      //       });
 
-          // Очищаем поля
-          // nameInputElement.value = "";
-          // commentAreaElement.value = "";
-          // butAddComment.disabled = true;
-        }
-      });
+      // Очищаем поля
+      // nameInputElement.value = "";
+      // commentAreaElement.value = "";
+      // butAddComment.disabled = true;
+      // }
+      // });
     </script>
+
+    <!-- добавление нового коммента -->
+    <script type="module" src="./api.js"></script>
+    <script type="module" src="./render.js"></script>
   </body>
 </html>
