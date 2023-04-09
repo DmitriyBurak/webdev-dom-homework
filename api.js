@@ -56,12 +56,12 @@ const postComment = (text, name) => {
       }
     })
     .then(() => {
-      butAddComment.disabled = true;
       document.querySelector('#isLoading').style.display = 'none';
       document.querySelector('#isLoading2').style.display = 'flex';
       console.log('Перед очисткой');
       nameInputElement.value = '';
       commentAreaElement.value = '';
+      butAddComment.disabled = false;
       getComments();
     })
     .catch((error) => {
